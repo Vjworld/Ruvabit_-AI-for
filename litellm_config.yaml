@@ -1,0 +1,51 @@
+model_list:
+  # 1. Primary: Cerebras Llama 3.3 70B (Ultra-fast, Free)
+  - model_name: cerebras-backup
+    litellm_params:
+      model: openai/llama3.3-70b
+      api_base: https://api.cerebras.ai/v1
+      api_key: os.environ/CEREBRAS_API_KEY
+
+  # 2. NVIDIA NIM: Active Nemotron 3.5 Lightning
+  - model_name: nvidia-backup
+    litellm_params:
+      model: openai/nvidia/nemotron-3.5-lightning-30b-a3b
+      api_base: https://integrate.api.nvidia.com/v1
+      api_key: os.environ/NVIDIA_NIM_API_KEY
+
+  # 3. OpenRouter: Free Tier
+  - model_name: openrouter-backup
+    litellm_params:
+      model: openrouter/deepseek/deepseek-chat:free
+      api_key: os.environ/OPENROUTER_API_KEY
+
+  # 4. SambaNova: Meta Llama 3.3 70B
+  - model_name: sambanova-backup
+    litellm_params:
+      model: openai/Meta-Llama-3.3-70B-Instruct
+      api_base: https://api.sambanova.ai/v1
+      api_key: os.environ/SAMBANOVA_API_KEY
+
+router_settings:
+  model_group_alias:
+    "auto-coder": "cerebras-backup"
+  fallbacks:
+    - auto-coder:
+        - "nvidia-backup"
+        - "openrouter-backup"
+        - "sambanova-backup"
+    - cerebras-backup:
+        - "nvidia-backup"
+        - "openrouter-backup"
+        - "sambanova-backup"
+    - nvidia-backup:
+        - "cerebras-backup"
+        - "openrouter-backup"
+        - "sambanova-backup"
+
+litellm_settings:
+  drop_params: true
+
+general_settings:
+  master_key: sk-local
+  disable_auth: true
