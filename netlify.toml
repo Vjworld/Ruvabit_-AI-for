@@ -4,7 +4,7 @@
   publish = "dist/public"
 
 [build.environment]
-  NODE_VERSION = "18.17.0"
+  NODE_VERSION = "20"
   ENABLE_FILE_BASED_STATIC_PLUGINS = "true"
 
 [dev]
